@@ -1123,9 +1123,8 @@ checksum = "eabb4a44450da02c90444cf74558da904edde8fb4e9035a9a6a4e15445af0bd7"
 
 [[package]]
 name = "halo2-axiom"
-version = "0.4.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b1d7b1243109adf85c716fa33dafb3c602694358821a0a1326a62f160d85600d"
+version = "0.4.4"
+source = "git+https://github.com/degatedev/halo2?branch=main#8ea806a45133b7feae194e550156cf7c22d616ae"
 dependencies = [
  "blake2b_simd",
  "crossbeam",
@@ -1148,7 +1147,6 @@ version = "0.4.1"
 source = "git+https://github.com/axiom-crypto/halo2-lib.git?tag=v0.4.1-git#2fe813b3ccd4f224da195d61829effb20599dcbd"
 dependencies = [
  "getset",
- "halo2-axiom",
  "halo2_proofs",
  "itertools 0.11.0",
  "jemallocator",
@@ -2577,6 +2575,7 @@ version = "0.1.7"
 dependencies = [
  "ark-std 0.3.0",
  "crossterm 0.25.0",
+ "halo2-axiom",
  "halo2-base",
  "halo2-ecc",
  "hex",
@@ -2609,6 +2608,7 @@ dependencies = [
  "crossterm 0.25.0",
  "ethereum-types",
  "getset",
+ "halo2-axiom",
  "halo2-base",
  "hex",
  "itertools 0.11.0",

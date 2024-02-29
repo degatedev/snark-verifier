@@ -28,6 +28,8 @@ ark-std = { version = "0.3.0", features = ["print-trace"], optional = true }
 halo2-base = { git = "https://github.com/axiom-crypto/halo2-lib.git", tag = "v0.4.1-git", default-features = false }
 snark-verifier = { version = "=0.1.7", path = "../snark-verifier", default-features = false }
 getset = "0.1.2"
+halo2-axiom = {git = "https://github.com/degatedev/halo2", branch = "main"}
+
 
 # loader_evm
 ethereum-types = { version = "=0.14.1", default-features = false, features = ["std"], optional = true }
@@ -51,7 +53,8 @@ crossterm = { version = "0.25" }
 ratatui = { version = "0.24", default-features = false, features = ["crossterm"] }
 
 [features]
-default = ["loader_halo2", "loader_evm", "halo2-axiom", "halo2-base/jemallocator", "display"]
+#default = ["loader_halo2", "loader_evm", "halo2-axiom", "halo2-base/jemallocator", "display"]
+default = ["loader_halo2", "loader_evm", "halo2-base/jemallocator", "display"]
 display = ["snark-verifier/display", "dep:ark-std"]
 loader_halo2 = ["snark-verifier/loader_halo2"]
 loader_evm = ["snark-verifier/loader_evm", "dep:ethereum-types"]
@@ -59,7 +62,8 @@ revm = ["snark-verifier/revm"]
 parallel = ["snark-verifier/parallel"]
 # EXACTLY one of halo2-pse / halo2-axiom should always be turned on; not sure how to enforce this with Cargo
 halo2-pse = ["snark-verifier/halo2-pse", "dep:serde_with"]
-halo2-axiom = ["snark-verifier/halo2-axiom"]
+#halo2-axiom = ["snark-verifier/halo2-axiom"]
+
 
 # zkevm = ["dep:zkevm-circuits", "dep:bus-mapping", "dep:mock", "dep:eth-types"]
 
