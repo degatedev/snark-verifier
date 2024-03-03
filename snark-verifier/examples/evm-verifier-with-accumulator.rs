@@ -134,7 +134,8 @@ mod application {
             layouter.assign_region(
                 || "",
                 |mut region| {
-                    #[cfg(feature = "halo2-pse")]
+                    //#[cfg(feature = "halo2-pse")]
+                    #[cfg(feature = "halo2-axiom")]
                     {
                         region.assign_advice(|| "", config.a, 0, || Value::known(self.0))?;
                         region.assign_fixed(|| "", config.q_a, 0, || Value::known(-Fr::one()))?;
