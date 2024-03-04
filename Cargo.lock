@@ -1108,8 +1108,7 @@ checksum = "eabb4a44450da02c90444cf74558da904edde8fb4e9035a9a6a4e15445af0bd7"
 [[package]]
 name = "halo2-axiom"
 version = "0.4.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d698920cd4cb189e6b90db50cb9393f1671f732f39665b907f745b5d45b51c8c"
+source = "git+https://github.com/degatedev/halo2.git?branch=main#93374e4f32959288e47177517aff8004b458fb0e"
 dependencies = [
  "blake2b_simd",
  "crossbeam",
@@ -1129,7 +1128,7 @@ dependencies = [
 [[package]]
 name = "halo2-base"
 version = "0.4.1"
-source = "git+https://github.com/axiom-crypto/halo2-lib.git?tag=v0.4.1-git#2fe813b3ccd4f224da195d61829effb20599dcbd"
+source = "git+https://github.com/degatedev/halo2-lib.git?branch=v0.4.4-git#44a705833afa067a835745a3c97eef3d95b6ce96"
 dependencies = [
  "getset",
  "halo2-axiom",
@@ -1150,7 +1149,7 @@ dependencies = [
 [[package]]
 name = "halo2-ecc"
 version = "0.4.1"
-source = "git+https://github.com/axiom-crypto/halo2-lib.git?tag=v0.4.1-git#2fe813b3ccd4f224da195d61829effb20599dcbd"
+source = "git+https://github.com/degatedev/halo2-lib.git?branch=v0.4.4-git#44a705833afa067a835745a3c97eef3d95b6ce96"
 dependencies = [
  "halo2-base",
  "itertools 0.11.0",
