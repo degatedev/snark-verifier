@@ -1107,26 +1107,6 @@ checksum = "eabb4a44450da02c90444cf74558da904edde8fb4e9035a9a6a4e15445af0bd7"
 
 [[package]]
 name = "halo2-axiom"
-version = "0.4.2"
-source = "git+https://github.com/degatedev/halo2.git?branch=0.4.2#bead5c611d5e7288860f72da721d3f52fcf8ee22"
-dependencies = [
- "blake2b_simd",
- "crossbeam",
- "ff",
- "group",
- "halo2curves-axiom",
- "itertools 0.11.0",
- "maybe-rayon",
- "pairing",
- "rand",
- "rand_core",
- "rustc-hash",
- "sha3",
- "tracing",
-]
-
-[[package]]
-name = "halo2-axiom"
 version = "0.4.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d698920cd4cb189e6b90db50cb9393f1671f732f39665b907f745b5d45b51c8c"
@@ -1152,27 +1132,7 @@ version = "0.4.1"
 source = "git+https://github.com/axiom-crypto/halo2-lib.git?tag=v0.4.1-git#2fe813b3ccd4f224da195d61829effb20599dcbd"
 dependencies = [
  "getset",
- "halo2-axiom 0.4.4",
- "itertools 0.11.0",
- "log",
- "num-bigint",
- "num-integer",
- "num-traits",
- "poseidon-primitives",
- "rand_chacha",
- "rayon",
- "rustc-hash",
- "serde",
- "serde_json",
-]
-
-[[package]]
-name = "halo2-base"
-version = "0.4.1"
-source = "git+https://github.com/degatedev/halo2-lib.git?branch=v0.4.2#7413db72a40dffbd51ef7073aa355932dc86e4fe"
-dependencies = [
- "getset",
- "halo2-axiom 0.4.2",
+ "halo2-axiom",
  "itertools 0.11.0",
  "jemallocator",
  "log",
@@ -1192,7 +1152,7 @@ name = "halo2-ecc"
 version = "0.4.1"
 source = "git+https://github.com/axiom-crypto/halo2-lib.git?tag=v0.4.1-git#2fe813b3ccd4f224da195d61829effb20599dcbd"
 dependencies = [
- "halo2-base 0.4.1 (git+https://github.com/axiom-crypto/halo2-lib.git?tag=v0.4.1-git)",
+ "halo2-base",
  "itertools 0.11.0",
  "num-bigint",
  "num-integer",
@@ -2541,7 +2501,7 @@ version = "0.1.7"
 dependencies = [
  "ark-std 0.3.0",
  "crossterm 0.25.0",
- "halo2-base 0.4.1 (git+https://github.com/degatedev/halo2-lib.git?branch=v0.4.2)",
+ "halo2-base",
  "halo2-ecc",
  "hex",
  "itertools 0.11.0",
@@ -2573,7 +2533,7 @@ dependencies = [
  "crossterm 0.25.0",
  "ethereum-types",
  "getset",
- "halo2-base 0.4.1 (git+https://github.com/degatedev/halo2-lib.git?branch=v0.4.2)",
+ "halo2-base",
  "hex",
  "itertools 0.11.0",
  "lazy_static",
