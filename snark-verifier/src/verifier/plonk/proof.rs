@@ -71,6 +71,10 @@ where
             return Err(Error::InvalidInstances);
         }
 
+        let kzg = transcript.read_ec_point()?;
+
+        println!("kzg: {:?}", kzg);
+
         let committed_instances = if let Some(ick) = &protocol.instance_committing_key {
             let loader = transcript.loader();
             let bases =

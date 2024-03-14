@@ -11,23 +11,26 @@ use halo2_base::{
     },
     halo2_proofs::{
         circuit::{Layouter, SimpleFloorPlanner},
-        halo2curves::bn256::{Bn256, Fr, G1Affine},
+        halo2curves::bn256::{Bn256, Fr, G1Affine, Fq},
         plonk::{self, Circuit, ConstraintSystem, Selector},
         poly::{commitment::ParamsProver, kzg::commitment::ParamsKZG},
+        transcript::{Blake2bRead,Challenge255,TranscriptReadBuffer,TranscriptRead},
     },
     utils::ScalarField,
     AssignedValue,
 };
+use halo2_ecc::{ecc::EccChip, fields::fp::FpChip as field_Fpchip};
 use itertools::Itertools;
 use rand::{rngs::StdRng, SeedableRng};
 use serde::{Deserialize, Serialize};
 #[cfg(debug_assertions)]
 use snark_verifier::util::arithmetic::fe_to_limbs;
+
 use snark_verifier::{
     loader::{
         self,
         halo2::halo2_ecc::{self, bigint::ProperCrtUint, bn254::FpChip},
-        native::NativeLoader,
+        native::NativeLoader, EcPointLoader,
     },
     pcs::{
         kzg::{KzgAccumulator, KzgAsProvingKey, KzgAsVerifyingKey, KzgSuccinctVerifyingKey},
@@ -101,6 +104,8 @@ impl VerifierUniversality {
 /// # Assumptions
 /// * `snarks` is not empty
 pub fn aggregate<'a, AS>(
+    // chip: &EccChip<Fr, field_Fpchip<Fr, Fq>>,
+    // range: &RangeChip<Fr>,
     svk: &Svk,
     loader: &Rc<Halo2Loader<'a>>,
     snarks: &[Snark],
@@ -121,6 +126,31 @@ where
         >,
 {
     assert!(!snarks.is_empty(), "trying to aggregate 0 snarks");
+
+    // let base_chip = chip.field_chip;
+    // let fq_chip = FqChip::<Fr>::new(range, BITS, LIMBS);
+
+    // let proof_1 = snarks[0].proof.clone();
+    // let proof_2 = snarks[1].proof.clone();
+
+    // let mut transcript_1 = Blake2bRead::<_,G1Affine, Challenge255<_>>::init(&proof_1[..]);
+    //     let mut transcript_1 = transcript_1.clone();
+    //     let advice_commitment_1 = transcript_1.read_point().unwrap();
+    //     dbg!(advice_commitment_1);
+    
+    // let mut transcript_2 = Blake2bRead::<_,G1Affine, Challenge255<_>>::init(&proof_2[..]);
+    //     let mut transcript_2 = transcript_2.clone();
+    //     let advice_commitment_2 = transcript_2.read_point().unwrap();
+    //     dbg!(advice_commitment_2);
+
+    // let x_1 = advice_commitment_1.x;
+    // let y_1 = advice_commitment_1.y;
+    // let x_2 = advice_commitment_2.x;
+    // let y_2 = advice_commitment_2.y;
+
+    // let assigned_x_1 = loader.assign_scalar(x_1);
+
+    
     let assign_instances = |instances: &[Vec<Fr>]| {
         instances
             .iter()
@@ -138,6 +168,8 @@ where
         &[],
         POSEIDON_SPEC.clone(),
     );
+
+    // let kzg = transcript.read_ec_point().unwrap();
 
     let preprocessed_as_witness = universality.preprocessed_as_witness();
     let (proof_transcripts, accumulators): (Vec<_>, Vec<_>) = snarks
@@ -206,6 +238,16 @@ where
             (proof_transcript, accumulator)
         })
         .unzip();
+    
+        // Assuming proof_transcripts[0][0] and proof_transcripts[0][1] are the TranscriptObjects you want to compare
+        if let (TranscriptObject::EcPoint(lhs_point), TranscriptObject::EcPoint(rhs_point)) = 
+            (&proof_transcripts[0][0], &proof_transcripts[1][0]) 
+        {
+            loader.ec_point_assert_eq("constraint ec point", lhs_point, rhs_point);
+        } else {
+            panic!("Expected EC points in the transcript objects");
+        }
+
     let mut accumulators = accumulators.into_iter().flatten().collect_vec();
 
     let accumulator = if accumulators.len() > 1 {
@@ -376,6 +418,7 @@ pub enum AssignedTranscriptObject {
 /// ## Assumptions
 /// - `pool` and `range` reference the same `SharedCopyConstraintManager`.
 pub fn aggregate_snarks<AS>(
+    // chip: &EccChip<Fr, field_Fpchip<Fr, Fq>>,
     pool: &mut SinglePhaseCoreManager<Fr>,
     range: &RangeChip<Fr>,
     svk: Svk, // gotten by params.get_g()[0].into()
@@ -415,6 +458,8 @@ where
                 .unwrap();
         (accumulator, transcript_write.finalize())
     };
+
+
 
     // create halo2loader
     let fp_chip = FpChip::<Fr>::new(range, BITS, LIMBS);
@@ -490,6 +535,7 @@ impl AggregationCircuit {
     /// Will fail silently if `snarks` were created using a different multi-open scheme than `AS`
     /// where `AS` can be either [`crate::SHPLONK`] or [`crate::GWC`] (for original PLONK multi-open scheme)
     pub fn new<AS>(
+        // chip: &EccChip<Fr, field_Fpchip<Fr, Fq>>,
         stage: CircuitBuilderStage,
         config_params: AggregationConfigParams,
         params: &ParamsKZG<Bn256>,
