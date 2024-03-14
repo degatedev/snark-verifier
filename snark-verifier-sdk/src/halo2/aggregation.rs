@@ -104,8 +104,6 @@ impl VerifierUniversality {
 /// # Assumptions
 /// * `snarks` is not empty
 pub fn aggregate<'a, AS>(
-    // chip: &EccChip<Fr, field_Fpchip<Fr, Fq>>,
-    // range: &RangeChip<Fr>,
     svk: &Svk,
     loader: &Rc<Halo2Loader<'a>>,
     snarks: &[Snark],

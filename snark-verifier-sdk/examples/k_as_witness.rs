@@ -4,8 +4,7 @@ use halo2_base::halo2_proofs::arithmetic::Field;
 use halo2_base::halo2_proofs::halo2curves::bn256::Fr;
 use halo2_base::halo2_proofs::poly::commitment::Params;
 use halo2_base::utils::fs::gen_srs;
-use halo2_proofs::{halo2curves as halo2_curves, transcript::{Blake2bRead,Challenge255, TranscriptReadBuffer, TranscriptRead}};
-use crate::halo2_curves::bn256::G1Affine;
+use halo2_proofs::{halo2curves as halo2_curves};
 
 use rand::rngs::StdRng;
 use rand::SeedableRng;
@@ -186,14 +185,6 @@ fn main() {
         .use_break_points(break_points.clone());
         let _snark = gen_snark_shplonk(&params, &pk, agg_circuit, None::<&str>);
         println!("snark with k = {k} success");
-        //check if the blindinqs are removed
-        let mut transcript = Blake2bRead::<_,G1Affine, Challenge255<_>>::init(&_snark.proof[..]);
-        let mut transcript1 = transcript.clone();
-        let advice_commitment_1 = transcript.read_point();
-        dbg!(advice_commitment_1);
-        let advice_commitment_2 = transcript1.read_point();
-        dbg!(advice_commitment_2);
-        let advice_commitment_3 = transcript1.read_point();
-        dbg!(advice_commitment_3);
+        
     }
 }
