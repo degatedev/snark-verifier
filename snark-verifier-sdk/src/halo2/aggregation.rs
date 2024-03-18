@@ -239,7 +239,7 @@ where
     
         // Assuming proof_transcripts[0][0] and proof_transcripts[0][1] are the TranscriptObjects you want to compare
         if let (TranscriptObject::EcPoint(lhs_point), TranscriptObject::EcPoint(rhs_point)) = 
-            (&proof_transcripts[0][0], &proof_transcripts[2][0]) 
+            (&proof_transcripts[0][0], &proof_transcripts[3][0]) 
         {
             loader.ec_point_assert_eq("constraint ec point", lhs_point, rhs_point);
         } else {
@@ -247,7 +247,7 @@ where
         }
 
         if let (TranscriptObject::EcPoint(lhs_point), TranscriptObject::EcPoint(rhs_point)) = 
-            (&proof_transcripts[1][0], &proof_transcripts[2][1]) 
+            (&proof_transcripts[1][0], &proof_transcripts[3][1]) 
         {
             loader.ec_point_assert_eq("constraint ec point", lhs_point, rhs_point);
         } else {
