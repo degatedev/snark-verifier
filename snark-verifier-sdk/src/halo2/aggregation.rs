@@ -254,13 +254,13 @@ where
             panic!("Expected EC points in the transcript objects");
         }
 
-        // if let (TranscriptObject::EcPoint(lhs_point), TranscriptObject::EcPoint(rhs_point)) = 
-        //     (&proof_transcripts[2][0], &proof_transcripts[3][2]) 
-        // {
-        //     loader.ec_point_assert_eq("constraint ec point", lhs_point, rhs_point);
-        // } else {
-        //     panic!("Expected EC points in the transcript objects");
-        // }
+        if let (TranscriptObject::EcPoint(lhs_point), TranscriptObject::EcPoint(rhs_point)) = 
+            (&proof_transcripts[2][0], &proof_transcripts[3][2]) 
+        {
+            loader.ec_point_assert_eq("constraint ec point", lhs_point, rhs_point);
+        } else {
+            panic!("Expected EC points in the transcript objects");
+        }
 
     let mut accumulators = accumulators.into_iter().flatten().collect_vec();
 
