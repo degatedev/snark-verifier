@@ -236,6 +236,15 @@ where
             (proof_transcript, accumulator)
         })
         .unzip();
+
+        //enforce hash_root_before == hash_root_after
+        let len_instance_per_snark = previous_instances[0].len() -1;
+        let num_blcok = previous_instances.len() -2;
+        for i in 0..num_blcok {
+            let hash_root_before = previous_instances[i][len_instance_per_snark];
+            let hash_root_after = previous_instances[i+1][len_instance_per_snark-1];
+            loader.ctx_mut().main().constrain_equal(&hash_root_before, &hash_root_after);
+        }
     
         // Assuming proof_transcripts[0][0] and proof_transcripts[0][1] are the TranscriptObjects you want to compare
         if let (TranscriptObject::EcPoint(lhs_point), TranscriptObject::EcPoint(rhs_point)) = 
