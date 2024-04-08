@@ -158,7 +158,7 @@ where
             .collect_vec()
     };
 
-    let mut previous_instances = Vec::with_capacity(snarks.len());
+    let mut previous_instances: Vec<Vec<AssignedValue<Fr>>> = Vec::with_capacity(snarks.len());
     let mut preprocessed_witnesses = Vec::with_capacity(snarks.len());
     // to avoid re-loading the spec each time, we create one transcript and clear the stream
     let mut transcript = PoseidonTranscript::<Rc<Halo2Loader<'a>>, &[u8]>::from_spec(
