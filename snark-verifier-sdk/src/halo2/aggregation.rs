@@ -237,39 +237,16 @@ where
         })
         .unzip();
 
-        //enforce hash_root_before == hash_root_after
-        let len_instance_per_snark = previous_instances[0].len() -1;
-        let num_blcok = previous_instances.len() -2;
-        for i in 0..num_blcok {
-            let hash_root_before = previous_instances[i][len_instance_per_snark];
-            let hash_root_after = previous_instances[i+1][len_instance_per_snark-1];
-            loader.ctx_mut().main().constrain_equal(&hash_root_before, &hash_root_after);
+        //Constrain the kzg from sha256 and batch verify circuit
+        if let (TranscriptObject::EcPoint(lhs_point), TranscriptObject::EcPoint(rhs_point)) = 
+            (&proof_transcripts[0][0], &proof_transcripts[1][110]) 
+        {
+            loader.ec_point_assert_eq("constraint ec point", lhs_point, rhs_point);
+        } else {
+            panic!("Expected EC points in the transcript objects");
         }
+
     
-        // Assuming proof_transcripts[0][0] and proof_transcripts[0][1] are the TranscriptObjects you want to compare
-        if let (TranscriptObject::EcPoint(lhs_point), TranscriptObject::EcPoint(rhs_point)) = 
-            (&proof_transcripts[0][0], &proof_transcripts[3][0]) 
-        {
-            loader.ec_point_assert_eq("constraint ec point", lhs_point, rhs_point);
-        } else {
-            panic!("Expected EC points in the transcript objects");
-        }
-
-        if let (TranscriptObject::EcPoint(lhs_point), TranscriptObject::EcPoint(rhs_point)) = 
-            (&proof_transcripts[1][0], &proof_transcripts[3][1]) 
-        {
-            loader.ec_point_assert_eq("constraint ec point", lhs_point, rhs_point);
-        } else {
-            panic!("Expected EC points in the transcript objects");
-        }
-
-        if let (TranscriptObject::EcPoint(lhs_point), TranscriptObject::EcPoint(rhs_point)) = 
-            (&proof_transcripts[2][0], &proof_transcripts[3][2]) 
-        {
-            loader.ec_point_assert_eq("constraint ec point", lhs_point, rhs_point);
-        } else {
-            panic!("Expected EC points in the transcript objects");
-        }
 
     let mut accumulators = accumulators.into_iter().flatten().collect_vec();
 
