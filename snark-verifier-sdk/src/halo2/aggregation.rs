@@ -125,28 +125,6 @@ where
 {
     assert!(!snarks.is_empty(), "trying to aggregate 0 snarks");
 
-    // let base_chip = chip.field_chip;
-    // let fq_chip = FqChip::<Fr>::new(range, BITS, LIMBS);
-
-    // let proof_1 = snarks[0].proof.clone();
-    // let proof_2 = snarks[1].proof.clone();
-
-    // let mut transcript_1 = Blake2bRead::<_,G1Affine, Challenge255<_>>::init(&proof_1[..]);
-    //     let mut transcript_1 = transcript_1.clone();
-    //     let advice_commitment_1 = transcript_1.read_point().unwrap();
-    //     dbg!(advice_commitment_1);
-    
-    // let mut transcript_2 = Blake2bRead::<_,G1Affine, Challenge255<_>>::init(&proof_2[..]);
-    //     let mut transcript_2 = transcript_2.clone();
-    //     let advice_commitment_2 = transcript_2.read_point().unwrap();
-    //     dbg!(advice_commitment_2);
-
-    // let x_1 = advice_commitment_1.x;
-    // let y_1 = advice_commitment_1.y;
-    // let x_2 = advice_commitment_2.x;
-    // let y_2 = advice_commitment_2.y;
-
-    // let assigned_x_1 = loader.assign_scalar(x_1);
 
     
     let assign_instances = |instances: &[Vec<Fr>]| {
@@ -248,28 +226,13 @@ where
     
         // Assuming proof_transcripts[0][0] and proof_transcripts[0][1] are the TranscriptObjects you want to compare
         if let (TranscriptObject::EcPoint(lhs_point), TranscriptObject::EcPoint(rhs_point)) = 
-            (&proof_transcripts[0][0], &proof_transcripts[1][110]) 
+            (&proof_transcripts[0][0], &proof_transcripts[1][109]) 
         {
             loader.ec_point_assert_eq("constraint ec point", lhs_point, rhs_point);
         } else {
             panic!("Expected EC points in the transcript objects");
         }
 
-        // if let (TranscriptObject::EcPoint(lhs_point), TranscriptObject::EcPoint(rhs_point)) = 
-        //     (&proof_transcripts[1][0], &proof_transcripts[3][1]) 
-        // {
-        //     loader.ec_point_assert_eq("constraint ec point", lhs_point, rhs_point);
-        // } else {
-        //     panic!("Expected EC points in the transcript objects");
-        // }
-
-        // if let (TranscriptObject::EcPoint(lhs_point), TranscriptObject::EcPoint(rhs_point)) = 
-        //     (&proof_transcripts[2][0], &proof_transcripts[3][2]) 
-        // {
-        //     loader.ec_point_assert_eq("constraint ec point", lhs_point, rhs_point);
-        // } else {
-        //     panic!("Expected EC points in the transcript objects");
-        // }
 
     let mut accumulators = accumulators.into_iter().flatten().collect_vec();
 
