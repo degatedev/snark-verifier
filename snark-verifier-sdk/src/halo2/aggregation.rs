@@ -224,6 +224,7 @@ where
         //     loader.ctx_mut().main().constrain_equal(&hash_root_before, &hash_root_after);
         // }
     
+        //enforce the kzg of sha256 column in the sha256 circuit is equal to the kzg of that in the batchverify circuit
         // Assuming proof_transcripts[0][0] and proof_transcripts[0][1] are the TranscriptObjects you want to compare
         if let (TranscriptObject::EcPoint(lhs_point), TranscriptObject::EcPoint(rhs_point)) = 
             (&proof_transcripts[0][0], &proof_transcripts[1][109]) 
