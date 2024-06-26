@@ -544,6 +544,9 @@ impl AggregationCircuit {
         );
         // expose accumulator as public instances
         builder.assigned_instances[0] = accumulator;
+        previous_instances[0].iter().for_each(|instance| {
+            builder.assigned_instances[0].push(instance.clone());
+        });
         Self { builder, previous_instances, preprocessed }
     }
 
