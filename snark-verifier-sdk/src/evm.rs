@@ -176,10 +176,33 @@ pub fn gen_evm_verifier_shplonk<C: CircuitExt<Fr>>(
 
 #[cfg(feature = "revm")]
 pub fn evm_verify(deployment_code: Vec<u8>, instances: Vec<Vec<Fr>>, proof: Vec<u8>) {
+    use std::path::Path;
+    use std::fs;
+    use serde_json::json;
+
     let calldata = encode_calldata(&instances, &proof);
+    let encoded_calldata = hex::encode(&calldata);  // Encode calldata for readability
+
+    // Create a JSON object
+    let json_object = json!({
+        "calldata": encoded_calldata
+    });
+
+    // Convert the JSON object to a pretty-printed string
+    let json_string = serde_json::to_string_pretty(&json_object).unwrap();
+    let path = Path::new("/home/ubuntu/eric/degate-circuit-v2/data/tem_json_file/calldata.json");
+
+    // Write the JSON string to the file
+    match fs::write(path, json_string) {
+        Ok(_) => println!("Calldata JSON successfully written to {:?}", path),
+        Err(e) => eprintln!("Failed to write calldata JSON: {:?}", e),
+    }
+
+    // Deploy and call the EVM with the generated calldata
     let gas_cost = snark_verifier::loader::evm::deploy_and_call(deployment_code, calldata).unwrap();
     dbg!(gas_cost);
 }
+
 
 pub fn write_calldata(instances: &[Vec<Fr>], proof: &[u8], path: &Path) -> io::Result<String> {
     let calldata = encode_calldata(instances, proof);
