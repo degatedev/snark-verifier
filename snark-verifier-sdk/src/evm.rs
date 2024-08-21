@@ -181,7 +181,16 @@ pub fn evm_verify(deployment_code: Vec<u8>, instances: Vec<Vec<Fr>>, proof: Vec<
     use serde_json::json;
 
     let calldata = encode_calldata(&instances, &proof);
-    let encoded_calldata = hex::encode(&calldata);  // Encode calldata for readability
+    let mut encoded_calldata = hex::encode(&calldata);  // Encode calldata for readability
+
+    // Ensure that the encoded calldata is long enough before attempting to drop the range
+    if encoded_calldata.len() > 896 {
+        // Drop the range [768..896] from the encoded calldata
+        encoded_calldata.replace_range(768..896, "");
+    } else {
+        eprintln!("Encoded calldata is too short to drop the specified range.");
+        return;
+    }
 
     // Create a JSON object
     let json_object = json!({
@@ -190,7 +199,9 @@ pub fn evm_verify(deployment_code: Vec<u8>, instances: Vec<Vec<Fr>>, proof: Vec<
 
     // Convert the JSON object to a pretty-printed string
     let json_string = serde_json::to_string_pretty(&json_object).unwrap();
-    let path = Path::new("/home/ubuntu/eric/degate-circuit-v2/data/tem_json_file/calldata.json");
+
+    // Use a relative path to the `aggrproof.json` file
+    let path = Path::new("data/tem_json_file/aggrproof.json");
 
     // Write the JSON string to the file
     match fs::write(path, json_string) {
