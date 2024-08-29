@@ -4,7 +4,7 @@ use halo2_base::halo2_proofs::arithmetic::Field;
 use halo2_base::halo2_proofs::halo2curves::bn256::Fr;
 use halo2_base::halo2_proofs::poly::commitment::Params;
 use halo2_base::utils::fs::gen_srs;
-use halo2_proofs::{halo2curves as halo2_curves};
+use halo2_proofs::halo2curves as halo2_curves;
 
 use rand::rngs::StdRng;
 use rand::SeedableRng;
@@ -171,9 +171,7 @@ fn main() {
     let pk = gen_pk(&params, &agg_circuit, None);
     let break_points = agg_circuit.break_points();
 
-    //let snarks = [8, 12, 15, 20].map(|k| (k, gen_application_snark(k)));
-    //let snarks = [8, 12, 15].map(|k| (k, gen_application_snark(k)));
-    let snarks = [8].map(|k| (k, gen_application_snark(k)));
+    let snarks = [8, 12, 15, 20].map(|k| (k, gen_application_snark(k)));
     for (k, snark) in snarks {
         let agg_circuit = AggregationCircuit::new::<SHPLONK>(
             CircuitBuilderStage::Prover,
@@ -185,6 +183,5 @@ fn main() {
         .use_break_points(break_points.clone());
         let _snark = gen_snark_shplonk(&params, &pk, agg_circuit, None::<&str>);
         println!("snark with k = {k} success");
-        
     }
 }
